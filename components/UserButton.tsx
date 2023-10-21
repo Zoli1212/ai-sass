@@ -10,7 +10,7 @@ import {
 import UserAvatar from "./UserAvatar";
 import { Session } from 'next-auth'
 import { Button } from "./ui/button";
-import { signIn} from 'next-auth/react'
+import { signIn, signOut} from 'next-auth/react'
 
 function UserButton({ session }: { session: Session | null}) {
 
@@ -20,16 +20,16 @@ function UserButton({ session }: { session: Session | null}) {
         </Button>
 
     )
-  return (
+  return  session && (
     <DropdownMenu>
-      <DropdownMenuTrigger><UserAvatar name={'John Doe'} image={'https://github.com/shadcn.png'}/></DropdownMenuTrigger>
+      <DropdownMenuTrigger><UserAvatar name={session.user?.name} image={session.user?.image}/></DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator></DropdownMenuSeparator>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Dark</DropdownMenuItem>
-        <DropdownMenuItem>System</DropdownMenuItem>
-        <DropdownMenuItem>System</DropdownMenuItem>
+        {/* <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>Billing</DropdownMenuItem>
+        <DropdownMenuItem>Team</DropdownMenuItem> */}
+        <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
